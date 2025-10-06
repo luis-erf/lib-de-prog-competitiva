@@ -57,12 +57,12 @@ int main(){
         cin >> x >> y;
         cout << base[sgtSol(sgt, base, 0, qnt - 1, x, y, 1)] << "\n";
     }
-}
+}    
 
 
 
 
-//Segtree para achar o min com atualização sem incluir o ultimo termo no intervalo buscado
+//Segtree para achar o min com atualização sem incluir o ultimo termo no intervalo buscado, caso queira incluir basta na query colocar n + 1 no último termo
 void update(vector<long long>& base, int i, int val, int n){
     i += n;
     base[i] = val;
