@@ -62,7 +62,7 @@ int main(){
 
 
 
-//Segtree para achar o min com atualização
+//Segtree para achar o min com atualização sem incluir o ultimo termo no intervalo buscado
 void update(vector<long long>& base, int i, int val, int n){
     i += n;
     base[i] = val;
