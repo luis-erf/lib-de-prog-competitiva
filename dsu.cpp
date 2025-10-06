@@ -1,37 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<int> p, rank;
-
-void dsu_create(vector<int>& p, int n){
-    for(int i = 0; i < n; i++){
-        p[i] = i;
-    }
-}
-
-int find(vector<int>& p, int k){
-    if(p[k] == k){
-        return k;
+int find(vector<int>& base, int a){
+    if(base[a] == a){
+        return a;
     }
     else{
-        p[k] = find(p, p[k]);
-        return p[k];
+        return find(base, base[a]);
     }
 }
 
-bool igual(vector<int>& p, int k, int l){
-    return find(p, k) == find(p, l);
-}
-
-void unios_set(vector<int> p, int k, int l){
-    int x = find(p, k), y = find(p, l);
-    if(rank[x] > rank[y]){
-        p[y] = x;
-    } 
-    else{
-        p[x] = y;
-        if(rank[x] == rank[y]){
-            rank[y]++;
+void dsu(vector<int>& base, vector<int>& tam, int a, int b, int& maior, int&resp){
+    int p1 = find(base, a), p2 = find(base, b);
+    if(base[p1] == base[p2]){
+        return;
+    }
+    else if(tam[p1] < tam[p2]){
+        base[p1] = p2;
+        tam[p2] += tam[p1];
+        if(tam[p2] > maior){
+            maior = tam[p2];
         }
+        resp--;
+    }
+    else{
+        base[p2] = p1;
+        tam[p1] += tam[p2];
+        if(tam[p1] > maior){
+            maior = tam[p1];
+        }
+        resp--;
     }
 }
