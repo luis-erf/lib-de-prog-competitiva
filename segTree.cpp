@@ -59,3 +59,26 @@ int main(){
     }
 }
 
+
+
+
+//Segtree para achar o min com atualização
+void update(vector<long long>& base, int i, int val, int n){
+    i += n;
+    base[i] = val;
+    for(int j = i; j > 1; j /= 2){
+        base[j/2] = min(base[j], base[j ^ 1]);
+    }
+}
+
+long long query(vector<long long>& base, int a, int b, int n){
+    int l = a + n;
+    int r = b + n;
+    long long resp = 1e18;
+    
+    for(; l < r; l /= 2, r /= 2){
+        if(l % 2 == 1) resp = min(resp, base[l++]);
+        if(r % 2 == 1) resp = min(resp, base[--r]);
+    }
+    return resp;
+}
