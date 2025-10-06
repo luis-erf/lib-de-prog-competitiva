@@ -14,13 +14,25 @@ void cf(vector<int>& frq, vector<int>& cmf){
     }
 }
 
-//Base para resolver a Range sum querry
-void build_rsm(vector<int>& base, vector<int>& rsm){
-    for(int i = 1; i < base.size() + 1; i++){
-        rsm[i] = rsm[i - 1] + base[i - 1];
+void buildFwk(vector<long long>& base, int i, int val, int tam){
+    i = tam + i; // jogar o valor da posição pra frente
+    base[i] = val; //alocar o valor
+    for(int j = i; j > 1; j /= 2){ //For para ir preenchendo os nós da árvore
+        base[j/2] = base[j] + base[j ^ 1];
     }
 }
 
-int resp(vector<int>& rsm, int l, int r){
-    return rsm[r] - rsm[l];
+long long rsq(vector<long long>& base, int a, int b, int qnt){
+    int l = a + qnt;
+    int r = b + qnt;
+    long long resp = 0;
+    for(int i = l, j = r; i < j; i/=2, j/=2){
+        if(i%2 == 1){
+            resp += base[i++];
+        }
+        if(j%2 == 1){
+            resp += base[--j];
+        }
+    }
+    return resp;
 }
