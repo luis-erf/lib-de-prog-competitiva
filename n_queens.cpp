@@ -46,3 +46,5 @@ void coloring(vector<vector<int>>& mat, int l, int& resp){
         }
     }
 }
+
+// Para o caso das n queens basta toda vez q encontrar um resultado rodar a matriz em busca dos locais em que elas foram posicionadas e jogar em um vetor
