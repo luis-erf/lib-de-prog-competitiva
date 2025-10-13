@@ -1,0 +1,13 @@
+//iteração de todos os conjuntos com bitmask
+int soma
+for(int i = 0; i < (1 << n); i++)
+  soma = 0;
+  for(int j = 0; j < n; j++){
+    if(i & (1 << j)){
+      soma += base[j];
+    }
+  }
+  if(soma > maior){ //onde devem ser colocados as condições para o que é desejado
+    maior = soma;
+  }
+}
