@@ -8,14 +8,32 @@ void DFS(vector<vector<int>>& adj, vector<bool>& mark, int v) {
     }
 }
 
-void toposort(vector<vector<int>>& adj, vector<bool>& mark, int v, stack<int>& topo) {
-    mark[v] = true;
-    for(int i : adj[v]) {
-        if(mark[i] == false) {
-            toposort(adj, mark, i, topo);
-        }
-    }
-    topo.push(v);
+vector<int> toposort(vector<pair<int, int>>& aresta, vector<int>& deg, vector<vector<int>>& base){
+	for(auto [u, v] : aresta){
+		deg[v]++;
+	}
+
+	queue<int> q;
+	for(int i = 0; i < base.size(); i++){
+		if(deg[i] == 0){
+			q.push(i);
+		}
+	}
+
+	vector<int> ord;
+	while(!q.empty()){
+		int u = q.front();
+		q.pop();
+		ord.push_back(u);
+		for(int v : base[u]){
+			deg[v]--;
+			if(deg[v] == 0){
+				q.push(v);
+			}
+		}
+	}
+
+	return ord;
 }
 
 void BFS(vector<vector<int>>& adj, vector<bool>& mark, int start) {
