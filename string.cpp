@@ -33,43 +33,6 @@ void kmpSearch(int n, int m, string T, string P, vector<int>& b, int& resp) {
 }
 
 
-//Sufix array
-void constructSA() {
-  // this version can go up to 100000 characters
-  int i, k, r;
-  for (i = 0; i < n; i++) RA[i] = T[i];
-  // initial rankings
-  for (i = 0; i < n; i++) SA[i] = i;
-  // initial SA: {0, 1, 2, ..., n-1}
-  for (k = 1; k < n; k <<= 1) {
-    // repeat sorting process log n times
-    countingSort(k); // actually radix sort: sort based on the second item
-    countingSort(0);
-    // then (stable) sort based on the first item
-    tempRA[SA[0]] = r = 0;
-    // re-ranking; start from rank r = 0
-    for (i = 1; i < n; i++)
-    // compare adjacent suffixes
-    tempRA[SA[i]] = // if same pair => same rank r; otherwise, increase r
-    (RA[SA[i]] == RA[SA[i-1]] && RA[SA[i]+k] == RA[SA[i-1]+k]) ? r : ++r;
-    for (i = 0; i < n; i++)
-    // update the rank array RA
-    RA[i] = tempRA[i];
-    if (RA[SA[n-1]] == n-1) break;
-    // nice optimization trick
-  }
-}
-
-int main() {
-  n = (int)strlen(gets(T));
-  // input T as per normal, without the ‘$’
-  T[n++] = ’$’;
-  // add terminating character
-  constructSA();
-  for (int i = 0; i < n; i++) printf("%2d\t%s\n", SA[i], T + SA[i]);
-} // return 0;
-
-
 void computeLCP() {
   int i, L;
   Phi[SA[0]] = -1;
