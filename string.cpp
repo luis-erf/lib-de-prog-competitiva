@@ -93,3 +93,74 @@ void computeLCP() {
   LCP[i] = PLCP[SA[i]];
   // put the permuted LCP to the correct position
 }
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define MAX_N 100010
+
+char T[MAX_N];
+int n;
+int RA[MAX_N], temp_RA[MAX_N];
+int SA[MAX_N], temp_SA[MAX_N];
+int c[MAX_N];
+
+void countingSort(int k) {
+    int i, sum, maxi = max(300, n);
+    memset(c, 0, sizeof(int) * maxi); // CORREÇÃO 1: zerar c[]
+
+    for (i = 0; i < n; i++) {
+        c[i + k < n ? RA[i + k] : 0]++;
+    }
+    for (i = sum = 0; i < maxi; i++) {
+        int t = c[i];
+        c[i] = sum;
+        sum += t;
+    }
+
+    for (i = 0; i < n; i++) {
+        temp_SA[c[SA[i] + k < n ? RA[SA[i] + k] : 0]++] = SA[i];
+    }
+
+    for (i = 0; i < n; i++) {
+        SA[i] = temp_SA[i];
+    }
+}
+
+void constructSA() {
+    int i, k, r;
+    for (i = 0; i < n; i++) { RA[i] = T[i]; }
+    for (i = 0; i < n; i++) { SA[i] = i; }
+    for (k = 1; k < n; k <<= 1) {
+        countingSort(k);
+        countingSort(0);
+        temp_RA[SA[0]] = r = 0;
+        for (i = 1; i < n; i++) {
+            bool sameRank1 = (RA[SA[i]] == RA[SA[i-1]]);
+            bool sameRank2 =
+                (SA[i] + k < n ? RA[SA[i] + k] : -1) ==
+                (SA[i-1] + k < n ? RA[SA[i-1] + k] : -1);
+            temp_RA[SA[i]] = (sameRank1 && sameRank2 ? r : ++r);
+        }
+        for (i = 0; i < n; i++) {
+            RA[i] = temp_RA[i];
+        }
+        if (RA[SA[n-1]] == n-1) { break; }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(0); cin.tie(nullptr);
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cin >> T[i];
+    }
+    T[n++] = '$'; // sentinel menor que qualquer caractere
+    constructSA();
+    for (int i = 0; i < n; i++) {
+        cout << SA[i] << " " << (T + SA[i]) << "\n";
+    }
+
+    return 0;
+}
