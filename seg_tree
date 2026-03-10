@@ -1,0 +1,27 @@
+int join(int a, int b){
+    return min(a, b);// tipo de operação que se quer realizar com a seg tree
+}
+
+void build_seg_tree(vector<int>& seg, vector<int>& base, int l, int r, int idx = 0){
+    if(l == r){
+        seg[idx] = base[l];
+        return;
+    }
+
+    int mid = (l + r)/2;
+    build_seg_tree(seg, base, l, mid, 2*idx + 1);
+    build_seg_tree(seg, base, mid + 1, r, 2*idx + 2);
+    seg[idx] = join(seg[idx*2 + 1], seg[idx*2 + 2]);
+}
+
+int query(vector<int>& seg, int L, int R, int l, int r, int idx){
+    if(R < l || L > r){
+        return 1e9;
+    }
+    if(L <= l && r <= R){
+        return seg[idx];
+    }
+    int mid = (l + r)/2;
+
+    return join(query(seg, L, R, l, mid, 2*idx + 1), query(seg, L, R, mid + 1, r, 2*idx + 2));
+}
