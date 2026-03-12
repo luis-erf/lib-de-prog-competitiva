@@ -113,3 +113,40 @@ pair<long long, int> query(vector<pair<long long, int>>& base, int a, int b, int
     }
     return resp;
 }
+
+
+
+
+//Fenwick tree
+int query(vector<int>& bit, int x){
+    int res = 0;
+    while(x > 0){
+        res += bit[x];
+        x -= (x & -x);
+    }
+    return res;
+}
+
+void update(vector<int>& bit, int x, int val){
+    while(x < bit.size()){
+        bit[x] += val;
+        x += (x & -x);
+    }
+}
+
+
+ll inversion_count(vector<int>& base, vector<int>& bit, vector<int>& pos){
+    ll inv = 0;
+    for(int i = base.size() - 1; i >= 0; i--){
+        inv += query(bit, get(pos, base[i]));
+        update(bit, get(pos, base[i]), 1);
+    }
+    return inv;
+}
+
+//Compressão de coordenadas
+// vector<int> pos = base;
+// sort(pos.begin(), pos.end());
+auto get(vector<int>& pos, int x){
+    return lower_bound(pos.begin(), pos.end(), x) - pos.begin() + 1;
+}
